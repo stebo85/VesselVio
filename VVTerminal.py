@@ -12,6 +12,9 @@ __download__ = "https://jacobbumgarner.github.io/VesselVio/Downloads"
 import os
 import time
 
+import nibabel as nib
+import numpy as np
+
 import igraph as ig
 
 from library import (
@@ -211,6 +214,10 @@ def process_volume(
 
         # Pad the volume for skeletonizatino
         volume = VolProc.pad_volume(volume)
+
+        ###HACK
+        array_img = nib.Nifti1Image(volume, affine=np.eye(4))
+        nib.save(array_img, 'test.nii')
 
         # Skeletonize, then find radii of skeleton points
         points = VolProc.skeletonize(volume, verbose=verbose)
@@ -440,7 +447,7 @@ if __name__ == "__main__":
 
     # Results/graph export
     save_segment_results = False  # Save individual segment features to csv file
-    results_folder = "Results/Path/Here"
+    results_folder = "output_results"
     save_graph = False  # Save reduced graph export?
     verbose = True
 
